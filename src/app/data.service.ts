@@ -9,6 +9,8 @@ export class DataService {
 
   public apps: any[] = [];
   public shouldUpdate: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  public years: number[] = [];
+  public yearSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
 
   constructor(private http: HttpClient) { }
 
@@ -54,5 +56,13 @@ export class DataService {
   public getAppReviews(id: string): Observable<any> {
     const url = "https://itunes.apple.com/rss/customerreviews/id=" + id + "/json";
     return this.http.get(url);
+  }
+
+  public setYears(years: any[]) {
+    this.years = years;
+  }
+
+  public getYears() {
+    return this.years;
   }
 }
