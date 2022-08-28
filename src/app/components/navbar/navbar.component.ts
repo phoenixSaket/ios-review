@@ -186,6 +186,7 @@ export class NavbarComponent implements OnInit {
 
   clearApps() {
     localStorage.clear();
+    window.location.reload();
   }
 
   getYears() {

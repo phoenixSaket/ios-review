@@ -23,29 +23,31 @@ export class DataService {
     let apps = appsFromLocalStorage.split(",");
     let app: any = {};
 
-    apps.forEach(el => {
-      this.getDetails(el).subscribe(data => {
-        app = {};
-        const details = data.results[0];
-        app.name = details.trackName;
-        app.description = details.description;
-        app.rating = details.averageUserRating;
-        app.company = details.artistName;
-        app.id = details.trackId;
-
-        let isPresent: boolean = false;
-        this.apps.forEach(el => {
-          if (el.id == app.id) {
-            isPresent = true;
-          }
-        });
-        if (!isPresent && app?.id != "") {
-          this.apps.push(app);
+    if (apps.length > 0) {
+      apps.forEach(el => {
+        this.getDetails(el).subscribe(data => {
           app = {};
-          this.shouldUpdate.next(true);
-        }
-      })
-    });
+          const details = data.results[0];
+          app.name = details.trackName;
+          app.description = details.description;
+          app.rating = details.averageUserRating;
+          app.company = details.artistName;
+          app.id = details.trackId;
+
+          let isPresent: boolean = false;
+          this.apps.forEach(el => {
+            if (el.id == app.id) {
+              isPresent = true;
+            }
+          });
+          if (!isPresent && app?.id != "") {
+            this.apps.push(app);
+            app = {};
+            this.shouldUpdate.next(true);
+          }
+        })
+      });
+    }
   }
 
   public getDetails(id: string): Observable<any> {
