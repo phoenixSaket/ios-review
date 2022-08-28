@@ -1,0 +1,42 @@
+<div class="navbar-container">
+    <div class="app-container">
+        <button class="box-button app bg-btn-green" (click)="addApp()">+ Add App</button>
+        <button class="box-button app bg-btn-green" (click)="selectAllAppsClick()" *ngIf="data.apps.length > 0"
+            [ngClass]="selectAllApps ? 'selected-app' : ''">All Apps</button>
+        <button class="box-button app" *ngFor="let app of data.apps" [ngClass]="app.selected ? 'selected-app': ''"
+            (click)="selectApp(app.name)">{{app.name}}</button>
+    </div>
+    <div class="search-container">
+        <input type="text" name="search-box" id="search-box" class="search-box shadow"
+            placeholder="Search Title/ Content" (keyup)="searchInput($event)">
+    </div>
+    <div class="rating-container">
+        <button class="box-button rating bg-btn-green" (click)="selectAllRatingsClick()"
+            [ngClass]="selectAllRatings? 'selected-rating' : ''">All</button>
+        <button class="box-button rating" [ngClass]="[rate.selected ? 'selected-rating' : '', 'bg-'+rate.rating + ' ']"
+            *ngFor="let rate of rating" (click)="selectRating(rate.rating)">{{rate.rating}}</button>
+    </div>
+    <div class="sort-container">
+        <button class="button bg-btn-green shadows" (click)="sortClicked('rating')">Sort By Rating</button>
+    </div>
+    <div class="sort-container">
+        <button class="button bg-btn-green shadows" (click)="sortClicked('date')">Sort By Date</button>
+    </div>
+</div>
+
+<app-slideout slideoutId="add-app" title="Add App" buttonPrimary="Add App" buttonSecondary="Close"
+    (primaryClick)="addAppClick($event)" (secondaryClick)="dismiss($event)">
+    <div #content class="add-app-container">
+        <div class="add-app-heading">Please input the ID of the app you want to get the ratings for</div>
+        <input type="text" name="app-id" id="app-id" class="search-box shadow" placeholder="App ID"
+            (change)="idInput($event)">
+        <button class="button add-app-btn bg-btn-green shadow" (click)="addAppID()">Find App</button>
+
+        <div class="details-container">
+            <div class="detail">App Name : <span class="bold">{{app?.name}}</span></div>
+            <div class="detail">Average Rating : <span class="bold">{{app?.rating}}</span></div>
+            <div class="detail">Developer : <span class="bold">{{app?.company}}</span></div>
+            <div class="detail error">{{error}}</div>
+        </div>
+    </div>
+</app-slideout>

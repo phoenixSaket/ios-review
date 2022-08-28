@@ -1,0 +1,139 @@
+.slideout-container {
+    width: 100%;
+    max-width: 500px;
+    z-index: 10;
+    top: 0;
+    left: 0;
+}
+
+.slideout {
+    width: 100%;
+    height: 100%;
+    max-width: 500px;
+    position: absolute;
+    left: -500px;
+    bottom: 0;
+    background-color: #ffffff;
+    z-index: 10;
+    display: flex;
+    overflow: hidden;
+    flex-direction: column;
+    align-items: center;
+}
+
+.slideout>* {
+    width: 100%;
+    display: flex;
+}
+
+.content {
+    overflow: auto;
+    /* height: calc(100% - 60px - 40px); */
+    width: 100%;
+    justify-content: center;
+    padding: 0px 20px;
+    /* background-color: #EFEFFA; */
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.close-slideout {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 50px !important;
+    height: 42px;
+    background-color: #E00004 !important;
+    padding: 10px;
+    cursor: pointer;
+    color: #FDF5BF;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.sildeout-title {
+    padding: 10px;
+    font-weight: 600;
+}
+
+.top {
+    top: 0;
+    width: 100%;
+    justify-content: center;
+    border-bottom: 1px solid #e7e7e7;
+    background-color: #efefef;
+    font-weight: 700;
+    font-size: 18px;
+    letter-spacing: 0.5px;
+}
+
+.slideout-buttons-container {
+    width: 100%;
+    border-top: 1px solid #e7e7e7;
+    position: absolute;
+    bottom: 0;
+    justify-content: space-around;
+    background-color: #efefef;
+    height: 50px;
+    padding: 0 20px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.slideout-btn-primary,
+.slideout-btn-secondary {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.slideout-btn-primary>button,
+.slideout-btn-secondary>button {
+    padding: 10px;
+    width: 90%;
+    font-weight: 600;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    background-color: #FDF5BF;
+}
+
+.hide-slideout {
+    animation: hide 500ms ease-in-out;
+    left: -375px;
+    width: 0;
+}
+
+.show-slideout {
+    animation: show 500ms ease-in-out;
+    left: 0px;
+    width: 100%;
+
+}
+
+@keyframes show {
+    from {
+        left: -375px;
+        width: 0;
+    }
+
+    to {
+        left: 0px;
+        width: 100%;
+    }
+}
+
+@keyframes hide {
+    from {
+        left: 0px;
+        width: 100%;
+    }
+
+    to {
+        left: -375px;
+        width: 0;
+    }
+}

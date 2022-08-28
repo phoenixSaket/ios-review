@@ -1,0 +1,9 @@
+<app-navbar (search)="getSearch($event)" (selectedApps)="getDataForSelectedApp($event)"
+    (selectedRatings)="getDataForSelectedRating($event)" (sortByRating)="sortByRating($event)"
+    (sortByDate)="sortByDate($event)">
+</app-navbar>
+<div class="main-page-container">
+    <div class="data-container">
+        <app-card *ngFor="let app of apps" [detail]="app"></app-card>
+    </div>
+</div>

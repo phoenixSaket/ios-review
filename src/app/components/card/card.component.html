@@ -1,0 +1,15 @@
+<div class="card-container shadows" [ngClass]="'border-'+detail.rating">
+    <div class="title" [ngClass]="'bg-'+detail.rating">{{detail.title}}</div>
+    <div class="content">{{detail.content}}</div>
+    <div class="app"><span class="bold">{{detail.app}}</span></div>
+    <div class="rating">
+        <div class="rate" *ngFor="let rate of rating; let i = index;">
+            <span [ngClass]="'fg-'+(i+1)" *ngIf="rate.isOn">&#9733;</span>
+            <span [ngClass]="'fg-'+(i+1)" *ngIf="!rate.isOn">&#9734;</span>
+        </div>
+    </div>
+    <div class="bottom-container">
+        <div class="date">{{date}}</div>
+        <div class="author">{{detail.author}}</div>
+    </div>
+</div>
