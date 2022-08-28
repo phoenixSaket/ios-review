@@ -24,10 +24,13 @@ export class NavbarComponent implements OnInit {
   @Output() selectedRatings: EventEmitter<any> = new EventEmitter<any>();
   @Output() sortByRating: EventEmitter<any> = new EventEmitter<any>();
   @Output() sortByDate: EventEmitter<any> = new EventEmitter<any>();
+  @Output() sortByYear: EventEmitter<number> = new EventEmitter<number>();
+  public years: number[] = [];
 
   constructor(private slideout: SlideoutService, public data: DataService) { }
 
   ngOnInit(): void {
+    this.getYears()
     this.data.apps.map(el => {
       el = { ...el, selected: false };
     })
@@ -179,5 +182,22 @@ export class NavbarComponent implements OnInit {
         this.sortByDate.emit(this.sort.date);
         break;
     }
+  }
+
+  clearApps() {
+    localStorage.clear();
+  }
+
+  getYears() {
+    this.data.yearSubject.subscribe(data=> {
+      if(!!data) {
+        this.years = data;
+      }
+    })
+  }
+
+  yearSelected(event:any) {
+    console.log(event.target.value);
+    this.sortByYear.emit(event.target.value)
   }
 }
