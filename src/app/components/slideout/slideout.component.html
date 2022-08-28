@@ -1,0 +1,20 @@
+<div class="slideout-container">
+    <div class="slideout shadow" [id]="slideoutId">
+        <div class="top shadow">
+            <div class="close-slideout" (click)="dismissPopup()">&#10006;</div>
+            <div class="sildeout-title" [innerHTML]="title"></div>
+        </div>
+        <div class="content">
+            <ng-content #content></ng-content>
+        </div>
+        <div class="slideout-buttons-container shadow">
+            <div class="slideout-btn-primary" *ngIf="buttonPrimary && buttonPrimary.length > 0">
+                <button class="shadow cursor" [ngClass]="buttonSecondary && buttonSecondary.length > 0 ? 'w-50': 'w-100'"
+                    (click)="pClick()">{{buttonPrimary}}</button>
+            </div>
+            <div class="slideout-btn-secondary" *ngIf="buttonSecondary && buttonSecondary.length > 0">
+                <button class="shadow w-50 cursor" (click)="sClick()">{{buttonSecondary}}</button>
+            </div>
+        </div>
+    </div>
+</div>
