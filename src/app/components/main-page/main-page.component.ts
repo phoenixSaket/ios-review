@@ -31,6 +31,7 @@ export class MainPageComponent implements OnInit {
     })
     appIDs.forEach(el => {
       this.data.getAppReviews(el.id).subscribe(out => {
+        console.log(out);
         out.feed.entry.forEach((ele: any) => {
           let data = {
             title: ele.title.label,
@@ -38,6 +39,7 @@ export class MainPageComponent implements OnInit {
             content: ele.content.label,
             rating: ele['im:rating'].label,
             date: ele.updated.label,
+            version: ele['im:version'].label,
             app: el.name
           }
           let isPresent: boolean = false;
