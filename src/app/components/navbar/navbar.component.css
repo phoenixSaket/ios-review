@@ -9,7 +9,9 @@
     flex-wrap: wrap;
 }
 
-.search-container, .app-container, .rating-container {
+.search-container,
+.app-container,
+.rating-container {
     padding: 10px;
 }
 
@@ -45,7 +47,8 @@
     border: none;
 }
 
-.rating, .app {
+.rating,
+.app {
     width: 40px;
     height: 40px;
     display: flex;
@@ -80,7 +83,7 @@
 }
 
 .detail {
-    padding-bottom: 10px; 
+    padding-bottom: 10px;
     font-size: 15px;
 }
 
@@ -92,6 +95,10 @@
     color: tomato;
 }
 
+.bg-btn-red {
+    background-color: rgb(255, 192, 181);
+}
+
 .bg-btn-green {
     background-color: rgb(147, 219, 255);
 }
@@ -100,6 +107,12 @@
     border: 2px solid black;
 }
 
-.sort-container{
+.sort-container {
     padding: 10px;
+}
+
+.select {
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
 }

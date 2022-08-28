@@ -25,14 +25,24 @@ export class MainPageComponent implements OnInit {
   getData() {
     const apps = this.data.apps;
     const appIDs: any[] = [];
-    let name = "";
     apps.forEach(el => {
       appIDs.push({ id: el.id, name: el.name });
     })
     appIDs.forEach(el => {
       this.data.getAppReviews(el.id).subscribe(out => {
         console.log(out);
+        let years: number[] = [];
         out.feed.entry.forEach((ele: any) => {
+          let year = new Date(ele.updated.label).getFullYear();
+          let isYrPresent: boolean = false;
+          years.forEach(yr => {
+            if (yr == year) {
+              isYrPresent = true;
+            }
+          })
+          if (!isYrPresent) {
+            years.push(year);
+          }
           let data = {
             title: ele.title.label,
             author: ele.author.name.label,
@@ -53,6 +63,8 @@ export class MainPageComponent implements OnInit {
             this.apps.push(data);
           }
         });
+        this.data.setYears(years);
+        this.data.yearSubject.next(years);
       })
     });
     this.backup = this.apps;
@@ -112,5 +124,15 @@ export class MainPageComponent implements OnInit {
       let date2 = new Date(b.date).getTime();
       return event ? date1 - date2 : date2 - date1;
     })
+  }
+
+  sortByYear(event: number) {
+    this.apps = this.backup.filter((el)=> {
+      return new Date(el.date).getFullYear() == event;
+    })
+
+    if(event == -1) {
+      this.apps = this.backup;
+    }
   }
 }
