@@ -43,7 +43,7 @@
             <div class="detail">App Name : <span class="bold">{{app?.name}}</span></div>
             <div class="detail">Average Rating : <span class="bold">{{app?.rating}}</span></div>
             <div class="detail">Developer : <span class="bold">{{app?.company}}</span></div>
-            <div class="detail error">{{error}}</div>
+            <div class="detail error" [innerHTML]="error"></div>
         </div>
     </div>
 </app-slideout>

@@ -3,7 +3,8 @@
     (sortByDate)="sortByDate($event)" (sortByYear)="sortByYear($event)">
 </app-navbar>
 <div class="main-page-container">
-    <div class="count-container"><span class="bold">{{apps.length}}</span> &nbsp;matching entries.</div>
+    <div class="count-container" *ngIf="!hasApps"><span class="bold">{{apps.length}}</span> &nbsp;matching entries.</div>
+    <div class="count-container" *ngIf="hasApps"><span class="bold">Please add an app for data to be seen.</span></div>
     <div class="data-container">
         <app-card *ngFor="let app of apps" [detail]="app"></app-card>
     </div>

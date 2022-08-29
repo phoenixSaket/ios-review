@@ -62,6 +62,12 @@ export class NavbarComponent implements OnInit {
       this.app.rating = details.averageUserRating;
       this.app.company = details.artistName;
       this.app.id = details.trackId;
+    },err=> {
+      console.log(err);
+      this.error = err.error.type == "error" ? "If you are not able to find your app, Apple seacrh service may have been blocked due to CORS policy. Please add CORS unblock extension to resolve the issue.</br></br><a style='color:navy' href='https://chrome.google.com/webstore/detail/cors-unblock/lfhmikememgdcahcdlaciloancbhjino?hl=en' target='_blank'>Link to CORS Unblock Extension</a>" : "";
+      if(err.error.errorMessage == "Invalid value(s) for key(s): [itunesId]") {
+        this.error = "Invalid App ID";
+      }
     })
   }
 
