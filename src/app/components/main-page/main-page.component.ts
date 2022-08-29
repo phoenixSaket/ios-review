@@ -9,6 +9,7 @@ import { DataService } from 'src/app/data.service';
 export class MainPageComponent implements OnInit {
   public apps: any[] = [];
   public backup: any[] = [];
+  public hasApps: boolean = false;
 
   constructor(private data: DataService, private cdr: ChangeDetectorRef) { }
 
@@ -28,6 +29,11 @@ export class MainPageComponent implements OnInit {
     apps.forEach(el => {
       appIDs.push({ id: el.id, name: el.name });
     })
+    if(appIDs.length = 0) {
+      this.hasApps = false;
+    } else {
+      this.hasApps = true;
+    }
     appIDs.forEach(el => {
       this.data.getAppReviews(el.id).subscribe(out => {
         console.log(out);
