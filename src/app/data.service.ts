@@ -33,15 +33,8 @@ export class DataService {
         app.company = details.artistName;
         app.id = details.trackId;
 
-        let isPresent: boolean = false;
-        this.apps.forEach(el => {
-          if (el.id == app.id) {
-            isPresent = true;
-          }
-        });
-        if (!isPresent && app?.id != "") {
-          this.apps.push(app);
-          app = {};
+        if (app?.id != "") {
+          this.apps = this.addIfNotPresent(app, this.apps);
           this.shouldUpdate.next(true);
         }
       })
@@ -58,11 +51,42 @@ export class DataService {
     return this.http.get(url);
   }
 
+  public getMoreReviews(id: string, page: number): Observable<any> {
+    const url = "https://itunes.apple.com/us/rss/customerreviews/page=" + page + "/id=" + id + "/sortby=mostrecent/json?urlDesc=/customerreviews/id=" + id + "/json";
+    return this.http.get(url);
+  }
+
   public setYears(years: any[]) {
     this.years = years;
   }
 
   public getYears() {
     return this.years;
+  }
+
+  public addYears(years: any[]) {
+    years.forEach(year => {
+      this.years.forEach(yr => {
+        this.years = this.addIfNotPresent(year, this.years);
+      })
+    })
+    this.years = this.sortArray(this.years);
+  }
+
+  sortArray(array: any[]) {
+    return array.sort((a, b) => { return b - a })
+  }
+
+  addIfNotPresent(entry: any, array: any[]) {
+    let isPresent: boolean = false;
+    array.forEach(el => {
+      if (el == entry) {
+        isPresent = true;
+      }
+    })
+    if (!isPresent) {
+      array.push(entry);
+    }
+    return array;
   }
 }
