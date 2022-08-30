@@ -10,7 +10,9 @@ export class DataService {
   public apps: any[] = [];
   public shouldUpdate: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public years: number[] = [];
+  public versions: number[] = [];
   public yearSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  public versionSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
 
   constructor(private http: HttpClient) { }
 
@@ -64,6 +66,14 @@ export class DataService {
     return this.years;
   }
 
+  public setVersions(versions: number[]) {
+    this.versions = versions;
+  }
+
+  public getVersions() {
+    return this.versions;
+  }
+
   public addYears(years: any[]) {
     years.forEach(year => {
       this.years.forEach(yr => {
@@ -71,6 +81,15 @@ export class DataService {
       })
     })
     this.years = this.sortArray(this.years);
+  }
+
+  public addVersions(versions: number[]) {
+    versions.forEach(version => {
+      this.versions.forEach(yr => {
+        this.versions = this.addIfNotPresent(version, this.versions);
+      })
+    })
+    this.versions = this.sortArray(this.versions);
   }
 
   sortArray(array: any[]) {

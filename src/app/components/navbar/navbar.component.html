@@ -24,9 +24,17 @@
         <button class="button bg-btn-green shadows" (click)="sortClicked('date')">Sort By Date</button>
     </div>
     <div class="sort-container">
+        Year : &nbsp;
         <select (change)="yearSelected($event)" class="select shadows">
             <option class="option" value="-1">All years</option>
             <option class="option" *ngFor="let year of years" [value]="year">{{year}}</option>
+        </select>
+    </div>
+    <div class="sort-container">
+        Version : &nbsp;
+        <select (change)="versionSelected($event)" class="select shadows">
+            <option class="option" value="-1">All Versions</option>
+            <option class="option" *ngFor="let version of versions" [value]="version">{{version}}</option>
         </select>
     </div>
 </div>
