@@ -15,7 +15,7 @@ export class DataService {
   constructor(private http: HttpClient) { }
 
   public initialize() {
-    let string = localStorage.getItem("apps") ? localStorage.getItem("apps") : ""
+    let string = localStorage.getItem("apps") ? localStorage.getItem("apps") : "";
     let appsFromLocalStorage = "";
     if (string != null) {
       appsFromLocalStorage = atob(string);
@@ -23,31 +23,22 @@ export class DataService {
     let apps = appsFromLocalStorage.split(",");
     let app: any = {};
 
-    if (apps.length > 0) {
-      apps.forEach(el => {
-        this.getDetails(el).subscribe(data => {
-          app = {};
-          const details = data.results[0];
-          app.name = details.trackName;
-          app.description = details.description;
-          app.rating = details.averageUserRating;
-          app.company = details.artistName;
-          app.id = details.trackId;
+    apps.forEach(el => {
+      this.getDetails(el).subscribe(data => {
+        app = {};
+        const details = data.results[0];
+        app.name = details.trackName;
+        app.description = details.description;
+        app.rating = details.averageUserRating;
+        app.company = details.artistName;
+        app.id = details.trackId;
 
-          let isPresent: boolean = false;
-          this.apps.forEach(el => {
-            if (el.id == app.id) {
-              isPresent = true;
-            }
-          });
-          if (!isPresent && app?.id != "") {
-            this.apps.push(app);
-            app = {};
-            this.shouldUpdate.next(true);
-          }
-        })
-      });
-    }
+        if (app?.id != "") {
+          this.apps = this.addIfNotPresent(app, this.apps);
+          this.shouldUpdate.next(true);
+        }
+      })
+    });
   }
 
   public getDetails(id: string): Observable<any> {
@@ -60,11 +51,42 @@ export class DataService {
     return this.http.get(url);
   }
 
+  public getMoreReviews(id: string, page: number): Observable<any> {
+    const url = "https://itunes.apple.com/us/rss/customerreviews/page=" + page + "/id=" + id + "/sortby=mostrecent/json?urlDesc=/customerreviews/id=" + id + "/json";
+    return this.http.get(url);
+  }
+
   public setYears(years: any[]) {
     this.years = years;
   }
 
   public getYears() {
     return this.years;
+  }
+
+  public addYears(years: any[]) {
+    years.forEach(year => {
+      this.years.forEach(yr => {
+        this.years = this.addIfNotPresent(year, this.years);
+      })
+    })
+    this.years = this.sortArray(this.years);
+  }
+
+  sortArray(array: any[]) {
+    return array.sort((a, b) => { return b - a })
+  }
+
+  addIfNotPresent(entry: any, array: any[]) {
+    let isPresent: boolean = false;
+    array.forEach(el => {
+      if (el == entry) {
+        isPresent = true;
+      }
+    })
+    if (!isPresent) {
+      array.push(entry);
+    }
+    return array;
   }
 }

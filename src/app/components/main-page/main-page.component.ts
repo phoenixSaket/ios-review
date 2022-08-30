@@ -9,7 +9,7 @@ import { DataService } from 'src/app/data.service';
 export class MainPageComponent implements OnInit {
   public apps: any[] = [];
   public backup: any[] = [];
-  public hasApps: boolean = false;
+  private pageCal: any[] = [];
 
   constructor(private data: DataService, private cdr: ChangeDetectorRef) { }
 
@@ -29,26 +29,13 @@ export class MainPageComponent implements OnInit {
     apps.forEach(el => {
       appIDs.push({ id: el.id, name: el.name });
     })
-    if(appIDs.length = 0) {
-      this.hasApps = false;
-    } else {
-      this.hasApps = true;
-    }
+    
     appIDs.forEach(el => {
       this.data.getAppReviews(el.id).subscribe(out => {
-        console.log(out);
         let years: number[] = [];
         out.feed.entry.forEach((ele: any) => {
           let year = new Date(ele.updated.label).getFullYear();
-          let isYrPresent: boolean = false;
-          years.forEach(yr => {
-            if (yr == year) {
-              isYrPresent = true;
-            }
-          })
-          if (!isYrPresent) {
-            years.push(year);
-          }
+          years = this.data.addIfNotPresent(year, years);
           let data = {
             title: ele.title.label,
             author: ele.author.name.label,
@@ -58,23 +45,57 @@ export class MainPageComponent implements OnInit {
             version: ele['im:version'].label,
             app: el.name
           }
-          let isPresent: boolean = false;
 
-          this.apps.forEach(el => {
-            if (el.title == data.title && el.content == data.content && el.author == data.author) {
-              isPresent = true;
-            }
-          })
-          if (!isPresent) {
-            this.apps.push(data);
-          }
+          this.apps = this.data.addIfNotPresent(data, this.apps);
         });
+
         this.data.setYears(years);
         this.data.yearSubject.next(years);
+
+        this.pageCal = this.getTotalPages(out.feed.link, el);
+        this.getDataForNextPages();
       })
     });
     this.backup = this.apps;
     this.cdr.detectChanges();
+  }
+
+  getTotalPages(links: any[], app: any) {
+    let totalPages: any[] = [];
+    links.forEach(link => {
+      if (link.attributes.rel == "last") {
+        const href = link.attributes.href;
+        totalPages.push({ app: app, pages: parseInt(href.substring(href.indexOf("page=") + 5, href.indexOf("/", href.indexOf("page=")))) });
+      }
+    })
+
+    return totalPages;
+  }
+
+  getDataForNextPages() {
+    this.pageCal.forEach((entry: any) => {
+      for (let i = 2; i <= entry.pages; i++) {
+        this.data.getMoreReviews(entry.app.id, i).subscribe(out => {
+          let years: number[] = [];
+          out.feed.entry.forEach((ele: any) => {
+            let year = new Date(ele.updated.label).getFullYear();
+            years = this.data.addIfNotPresent(year, years);
+            let data = {
+              title: ele.title.label,
+              author: ele.author.name.label,
+              content: ele.content.label,
+              rating: ele['im:rating'].label,
+              date: ele.updated.label,
+              version: ele['im:version'].label,
+              app: entry.app.name
+            }
+            this.apps = this.data.addIfNotPresent(data, this.apps);
+          });
+
+          this.data.addYears(years);
+        })
+      }
+    })
   }
 
   getSearch(data: any) {
@@ -133,12 +154,13 @@ export class MainPageComponent implements OnInit {
   }
 
   sortByYear(event: number) {
-    this.apps = this.backup.filter((el)=> {
+    this.apps = this.backup.filter((el) => {
       return new Date(el.date).getFullYear() == event;
     })
 
-    if(event == -1) {
+    if (event == -1) {
       this.apps = this.backup;
     }
   }
+
 }
