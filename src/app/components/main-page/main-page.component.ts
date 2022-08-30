@@ -32,9 +32,11 @@ export class MainPageComponent implements OnInit {
     appIDs.forEach(el => {
       this.data.getAppReviews(el.id).subscribe(out => {
         let years: number[] = [];
+        let versions: number[] = [];
         out.feed.entry.forEach((ele: any) => {
           let year = new Date(ele.updated.label).getFullYear();
           years = this.data.addIfNotPresent(year, years);
+          versions = this.data.addIfNotPresent(ele['im:version'].label, versions);
           let data = {
             title: ele.title.label,
             author: ele.author.name.label,
@@ -49,7 +51,9 @@ export class MainPageComponent implements OnInit {
         });
 
         this.data.setYears(years);
+        this.data.setVersions(versions);
         this.data.yearSubject.next(years);
+        this.data.versionSubject.next(versions);
 
         this.pageCal = this.getTotalPages(out.feed.link, el);
         this.getDataForNextPages();
@@ -76,9 +80,11 @@ export class MainPageComponent implements OnInit {
       for (let i = 2; i <= entry.pages; i++) {
         this.data.getMoreReviews(entry.app.id, i).subscribe(out => {
           let years: number[] = [];
+          let versions: number[] = [];
           out.feed.entry.forEach((ele: any) => {
             let year = new Date(ele.updated.label).getFullYear();
             years = this.data.addIfNotPresent(year, years);
+            versions = this.data.addIfNotPresent(ele['im:version'].label, versions);
             let data = {
               title: ele.title.label,
               author: ele.author.name.label,
@@ -92,6 +98,7 @@ export class MainPageComponent implements OnInit {
           });
 
           this.data.addYears(years);
+          this.data.addVersions(versions);
         })
       }
     })
@@ -155,6 +162,16 @@ export class MainPageComponent implements OnInit {
   sortByYear(event: number) {
     this.apps = this.backup.filter((el) => {
       return new Date(el.date).getFullYear() == event;
+    })
+
+    if (event == -1) {
+      this.apps = this.backup;
+    }
+  }
+
+  sortByVersion(event: number) {
+    this.apps = this.backup.filter((el) => {
+      return el.version == event;
     })
 
     if (event == -1) {
