@@ -10,6 +10,7 @@ export class MainPageComponent implements OnInit {
   public apps: any[] = [];
   public backup: any[] = [];
   private pageCal: any[] = [];
+  public appNames : string[] = [];
 
   constructor(private data: DataService, private cdr: ChangeDetectorRef) { }
 
@@ -21,6 +22,15 @@ export class MainPageComponent implements OnInit {
         this.getData();
       }
     })
+  }
+
+  getApps(apps: any[]) {
+    let temp: string[] = [];
+    apps.forEach((el: any) => {
+      temp = this.data.addIfNotPresent(el.app, temp);
+    });
+
+    this.appNames = temp;
   }
 
   getData() {
@@ -48,7 +58,7 @@ export class MainPageComponent implements OnInit {
             app: el.name
           }
 
-          this.apps = this.data.addIfNotPresent(data, this.apps);
+          this.apps = this.data.addReviewIfNotPresent(data, this.apps);
         });
 
         this.data.setYears(years);
@@ -61,6 +71,7 @@ export class MainPageComponent implements OnInit {
       })
     });
     this.backup = this.apps;
+    this.getApps(this.apps);
     this.cdr.detectChanges();
   }
 
@@ -95,14 +106,15 @@ export class MainPageComponent implements OnInit {
               version: ele['im:version'].label,
               app: entry.app.name
             }
-            this.apps = this.data.addIfNotPresent(data, this.apps);
+            this.apps = this.data.addReviewIfNotPresent(data, this.apps);
           });
-
+          
           this.data.addYears(years);
           this.data.addVersions(versions);
         })
       }
     })
+    this.getApps(this.apps);
   }
 
   getSearch(data: any) {

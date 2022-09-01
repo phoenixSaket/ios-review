@@ -1,9 +1,9 @@
 .bg-1 {
-    background-color: #ffabb5;
+    background-color: #eb3f3f;
 }
 
 .bg-2 {
-    background-color: #feedb7;
+    background-color: #f5e050;
 }
 
 .bg-3 {
@@ -44,11 +44,11 @@
 }
 
 .border-1 {
-    box-shadow: 0 0 5px 1px #ffabb5;
+    box-shadow: 0 0 5px 1px #eb3f3f;
 }
 
 .border-2 {
-    box-shadow: 0 0 5px 1px #feedb7;
+    box-shadow: 0 0 5px 1px #f5e050;
 }
 
 .border-3 {

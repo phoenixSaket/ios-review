@@ -4,7 +4,12 @@
 </app-navbar>
 <div class="main-page-container">
     <div class="count-container"><span class="bold">{{apps.length}}</span> &nbsp;matching entries.</div>
-    <div class="data-container">
-        <app-card *ngFor="let app of apps" [detail]="app"></app-card>
+    <div class="app-data-container" *ngFor="let appName of appNames">
+        <div class="title">{{appName}} : </div>
+        <div class="data-container">
+            <div *ngFor="let app of apps">
+                <app-card *ngIf="app.app == appName" [detail]="app"></app-card>
+            </div>
+        </div>
     </div>
 </div>

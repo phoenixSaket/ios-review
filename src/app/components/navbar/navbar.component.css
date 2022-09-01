@@ -116,3 +116,14 @@
     border: none;
     border-radius: 5px;
 }
+
+.check {
+    background-color: white;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    margin-right: 10px;
+}

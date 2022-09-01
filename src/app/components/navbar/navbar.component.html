@@ -2,9 +2,17 @@
     <div class="app-container">
         <button class="box-button app bg-btn-green" (click)="addApp()">+ Add App</button>
         <button class="box-button app bg-btn-green" (click)="selectAllAppsClick()" *ngIf="data.apps.length > 0"
-            [ngClass]="selectAllApps ? 'selected-app' : ''">All Apps</button>
+            [ngClass]="selectAllApps ? 'selected-app' : ''">
+            <span class="check shadow" *ngIf="selectAllApps">&#10003;</span>
+            <span class="check shadow" *ngIf="!selectAllApps"></span>
+            All Apps
+        </button>
         <button class="box-button app" *ngFor="let app of data.apps" [ngClass]="app.selected ? 'selected-app': ''"
-            (click)="selectApp(app.name)">{{app.name}}</button>
+            (click)="selectApp(app.name)">
+            <span class="check shadow" *ngIf="app.selected">&#10003;</span>
+            <span class="check shadow" *ngIf="!app.selected"></span>
+            {{app.name}}
+        </button>
         <button class="box-button app bg-btn-red" (click)="clearApps()" *ngIf="data.apps.length > 0">Clear Apps</button>
     </div>
     <div class="search-container">

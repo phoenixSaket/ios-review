@@ -108,4 +108,18 @@ export class DataService {
     }
     return array;
   }
+
+  addReviewIfNotPresent(entry: any, array: any[]) {
+    let isPresent: boolean = false;
+    array.forEach(el => {
+      if (el.title == entry.title && el.content == entry.content && el.brand == entry.brand && el.author == entry.author) {
+        isPresent = true;
+      }
+    })
+    if (!isPresent) {
+      array.push(entry);
+    }
+    return array;
+  }
+
 }
